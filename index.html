@@ -8,13 +8,7 @@
         #urlCountry{
             height: 25vh;
             width: 100vw;
-            /* margin: 0px;
-            background-color: cornflowerblue;
-            text-align: justify;
-            color: yellow; */
-        }
-        object{
-            width: 100vw;
+            overflow: scroll;
             margin: 0px;
             background-color: cornflowerblue;
             text-align: justify;
@@ -27,24 +21,36 @@
     <div id="urlCountry" >
 
     </div>
-    <p id="cont"></p>
+    <p id="parr"></p>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>    <script>
- 
+    <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>    <script> -->
+    <script>
         document.addEventListener("DOMContentLoaded",function(event){
-            document.getElementsByTagName("div")[0].innerHTML='<object type="text/html" data="https://restcountries.com/v3.1/name/Colombia" ></object>';
-            let js = JSON.parse(document.children[0].innerText);
-            let prop = [];
-            prop["NameCommon"]=js[0].name.common;
-            prop["NameOfficial"]=js[0].name.official;
-            let kCurr = Object.keys(js[0].currencies)[0];
-            prop["currenciesName"]=js[0].name.common;
-            prop["region"]=js[0].region;
-            prop["capital"]=js[0].capital;
-            prop["area"]=js[0].area;
-            document.getElementsByName("p")[0].innerHTML=prop.NameCommon;
-
-
+            let dataRec;
+            fetch('https://restcountries.com/v3.1/name/Colombia')
+            .then(response => {
+                if (!response.ok) {
+                throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                for (const property in data[0]) {
+                  document.getElementById("urlCountry").innerHTML += `${property}: ${JSON.stringify(data[0][property])} <br>`;
+                }
+                let kCurr = Object.keys(data[0].currencies)[0];
+                //document.getElementById("parr").innerHTML=data;
+                document.getElementById("parr").innerHTML= `<b>Common name:</b> ${data[0].name.common} <br> 
+                <b>Official name:</b> ${data[0].name.official} <br>
+                <b>Currency name:</b> ${data[0].currencies[kCurr].name} <br>
+                <b>Region:</b> ${data[0].region} <br>
+                <b>Capital:</b> ${data[0].capital} <br>
+                <b>Area:</b> ${data[0].area}`;
+                //console.log('Data received:', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
         });
         
     </script>
