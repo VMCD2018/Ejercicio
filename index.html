@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #urlCountry{
+            height: 25vh;
+            width: 100vw;
+            /* margin: 0px;
+            background-color: cornflowerblue;
+            text-align: justify;
+            color: yellow; */
+        }
+        object{
+            width: 100vw;
+            margin: 0px;
+            background-color: cornflowerblue;
+            text-align: justify;
+            color: yellow;
+
+        }
+    </style>
+</head>
+<body>
+    <div id="urlCountry" >
+
+    </div>
+    <p id="cont"></p>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>    <script>
+ 
+        document.addEventListener("DOMContentLoaded",function(event){
+            document.getElementsByTagName("div")[0].innerHTML='<object type="text/html" data="https://restcountries.com/v3.1/name/Colombia" ></object>';
+            let js = JSON.parse(document.children[0].innerText);
+            let prop = [];
+            prop["NameCommon"]=js[0].name.common;
+            prop["NameOfficial"]=js[0].name.official;
+            let kCurr = Object.keys(js[0].currencies)[0];
+            prop["currenciesName"]=js[0].name.common;
+            prop["region"]=js[0].region;
+            prop["capital"]=js[0].capital;
+            prop["area"]=js[0].area;
+            document.getElementsByName("p")[0].innerHTML=prop.NameCommon;
+
+
+        });
+        
+    </script>
+</body>
+</html>
